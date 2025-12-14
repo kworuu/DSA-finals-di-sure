@@ -42,20 +42,41 @@ public:
     }
 
     // ==============================
-    // PREDECESSOR (DO THIS PART)
+    // PREDECESSOR 
     // ==============================
     int predecessor(int num) {
         node* curr = tree->getRoot();
         int pred = -1;
 
-        while
+        while(curr) {
+            if(num > curr->elem) {
+                pred = curr->elem;
+                curr = curr->right;
+            } else {
+                curr = curr->left;
+            }
+        }
+
+        return pred;
     }
 
     // ==============================
-    // SUCCESSOR (DO THIS PART)
+    // SUCCESSOR 
     // ==============================
     int successor(int num) {
-        
+        node* curr = tree->getRoot();
+        int succ = -1;
+
+        while(curr) {
+            if(num < curr->elem) {
+                succ = curr->elem;
+                curr = curr->left;
+            } else {
+                curr = curr->right;
+            }
+        }
+
+        return succ;
     }
 
     void print() {
