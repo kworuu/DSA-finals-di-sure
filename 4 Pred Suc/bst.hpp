@@ -46,17 +46,17 @@ public:
     // ==============================
     int predecessor(int num) {
         node* curr = tree->getRoot();
-        int pred;
+        int pred = -1;
 
-        while(curr) {}
+        while(curr) {
             if(num > curr->elem) {
                 pred = curr->elem;
                 curr = curr->right;
-            } else {
+            } else if(num < curr->elem) {
                 curr = curr->left;
             }
         }
-        
+
         return pred;
     }
 
@@ -65,13 +65,13 @@ public:
     // ==============================
     int successor(int num) {
         node* curr = tree->getRoot();
-        int succ;
+        int succ = -1;
 
-        while(curr) {}
+        while(curr) {
             if(num < curr->elem) {
-                pred = curr->elem;
+                succ = curr->elem;
                 curr = curr->left;
-            } else {
+            } else if(num > curr->elem) {
                 curr = curr->right;
             }
         }

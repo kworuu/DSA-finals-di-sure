@@ -24,7 +24,7 @@ class MyGenTree : public GenTree {
     
     void dfs(node* n) {
         if(n == NULL) return;
-        
+
         cout << n->elem << " ";
         for(int i = 0; i < n->num_child; i++) {
             dfs(n->children[i]);
@@ -33,28 +33,24 @@ class MyGenTree : public GenTree {
     
     void pos(node* n) {
         if(n == NULL) return;
-        
+
         for(int i = 0; i < n->num_child; i++) {
-            pos(n->children[i]);
+            dfs(n->children[i]);
         }
-        
         cout << n->elem << " ";
+
     }
     
     void bfs(node* n) {
-        if(n == NULL) return;  // ADDED: Safety check
-        
-        node* Q[100];  // INCREASED: 10 might be too small
-        int pop = 0;
-        int push = 0;
-        
+        node* Q[20];
+        int pop = 0, push = 0;
+
         Q[push++] = n;
-        
+
         while(pop < push) {
             node* curr = Q[pop++];
-            
-            cout << curr->elem << " ";
-            
+            cout << curr-> << " ";
+
             for(int i = 0; i < curr->num_child; i++) {
                 Q[push++] = curr->children[i];
             }

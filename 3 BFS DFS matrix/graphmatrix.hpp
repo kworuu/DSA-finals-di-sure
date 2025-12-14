@@ -13,19 +13,18 @@ class GraphMatrix : public Graph {
     int num_edge;
 
     void dfsRecursive(char v, bool visit[]) {
-        int v_ind;
-
+        int vInd;
         for(int i = 0; i < num_vert; i++) {
-            if(s_vertices[i] == start) {
-                v_ind = i;
+            if(s_vertices[i] == v) {
+                vInd = i;
             }
         }
 
-        visit[v_ind] = true;
+        visit[vInd] = true;
         cout << v << " ";
 
         for(int i = 0; i < num_vert; i++) {
-            if(matrix[v_ind][i] != 0 && !visit[i]) {
+            if(matrix[vInd][i] != 0 && !visit[i]) {
                 dfsRecursive(s_vertices[i], visit);
             }
         }
@@ -279,58 +278,56 @@ class GraphMatrix : public Graph {
     // ========== TRAVERSALS ========
 
     void depthFirstSearch(char start) {
-        bool visit[10] = {false};
-        int v_ind = -1;
+        int ind = -1;
+        bool visit[num_vert] = {false};
 
-        for(int i = 0; i < num_vert; i++) {
+        for(int i  = 0; i < num_vert; i++) {
             if(s_vertices[i] == start) {
-                v_ind = i;
+                ind = i;
+                break;
             }
         }
 
-        if(v_ind == -1) {
-            cout << "not found" << endl;
-            return;
-        }
+        if(ind == -1) return;
 
+        cout << "DFS: ";
         dfsRecursive(start, visit);
         cout << endl;
     }
     
     void breadthFirstSearch(char start) {
-        char Q[10];
-        int push = 0;
-        int pop = 0;
-
-        bool visit[10] = {false};
+        char Q[100];
+        int push = 0, pop = 0;
+        bool visit[num_vert] = {false};
 
         int ind = -1;
-        for(int i = 0; i < num_vert; i++) {
+        for(int i  = 0; i < num_vert; i++) {
             if(s_vertices[i] == start) {
                 ind = i;
+                break;
             }
         }
 
         if(ind == -1) return;
-        
-        cout << "BFS: ";
-        visit[ind] = true;
-        Q[push++] = start;
 
+        Q[push++] = start;
+        visit[ind] = true;
+        cout << "BFS: ";
+        
         while(pop < push) {
             char curr = Q[pop++];
             cout << curr << " ";
 
-             int v_ind = -1;
-            for(int i = 0; i < num_vert; i++) {
+            int vInd = -1;
+            for(int i  = 0; i < num_vert; i++) {
                 if(s_vertices[i] == curr) {
-                    v_ind = i;
+                    vInd = i;
                     break;
                 }
             }
 
             for(int i = 0; i < num_vert; i++) {
-                if((matrix[v_ind][i] != 0 && !visit[i])) {
+                if(matrix[vInd][i] != 0 && !visit[i]) {
                     Q[push++] = s_vertices[i];
                     visit[i] = true;
                 }

@@ -27,6 +27,7 @@ public:
         for(int i = 0; i < num_vert; i++) {
             verts[i] = s_vertices[i]->getName();
         }
+
         return verts;
     }
 
@@ -35,42 +36,43 @@ public:
     }
 
     int* edges() {
-        int* edges = new int[num_vert];
+        int* edges = new int[num_edge];
 
-        for(int i = 0; i < num_vert; i++) {
-            edges[i] = s_edges[i];
+        for(int i = 0; i < num_edge; i++) {
+            edges = s_edges[i];
         }
-        return verts;
+
+        return edges;
     }
 
     int getEdge(char u, char v)  {
-        int u_ind, v_ind;
+        int uInd, vInd;
 
-        for(u_ind = 0; u_ind < num_vert; u_ind++) {
-            if(s_vertices[u_ind]->getName() == u) {
+        for(uInd = 0; uInd < num_vert; uInd++) {
+            if(s_vertices[uInd]->getName() == u) {
                 break;
             }
         }
 
-        for(v_ind = 0; v_ind < num_vert; v_ind++) {
-            if(s_vertices[v_ind]->getName() == v) {
+        for(vInd = 0; vInd < num_vert; vInd++) {
+            if(s_vertices[vInd]->getName() == v) {
                 break;
             }
         }
 
-        int* outEdge = s_vertices[u_ind]->getOutEdges();
-        int outCount = s_vertices[u_ind]->getOutCount();
-        int edgeFound = 0;
+        int* outEdges = s_vertices[uInd]->getOutEdges();
+        int outCount = s_vertices[uInd]->getOutCount();
+        int found = 0;
 
         for(int i = 0; i < outCount; i++) {
-            if(s_vertices[v_ind]->findIn(outEdge[i])) {
-                edgeFound = outEdge[i];
+            if(s_vertices[vInd]->findIn(outEdges[i])) {
+                found = outEdges[i];
                 break;
             }
         }
 
-        delete[] outEdge;
-        return edgeFound;
+        delete[] outEdges;
+        return found;
     }
 
     char* endVertices(int e)  {
@@ -80,14 +82,12 @@ public:
         for(int i = 0; i < num_vert; i++) {
             if(s_vertices[i]->findOut(e)) {
                 endV[0] = s_vertices[i]->getName();
-                break;
             }
         }
 
         for(int i = 0; i < num_vert; i++) {
             if(s_vertices[i]->findIn(e)) {
-                endV[0] = s_vertices[i]->getName();
-                break;
+                endV[1] = s_vertices[i]->getName();
             }
         }
 
@@ -97,11 +97,10 @@ public:
     //opposite algorthm shortcut!
     char opposite(char v, int e)  {
         for(int i = 0; i < num_vert; i++) {
-            if(s_vertices[i]->findIn(e) || s_vertices[i]->findOut(e) && s_vertices[i]->getName() != v) {
+            if(s_vertices[i]->findIn(e) || s_vertices[i]->findOut(e)  && s_vertices[i]->getName() != v) {
                 return s_vertices[i]->getName();
             }
         }
-        return '-';
     }
 
 
@@ -109,9 +108,8 @@ public:
         for(int i = 0; i < num_vert; i++) {
             if(s_vertices[i]->getName() == v) {
                 return s_vertices[i]->getOutCount();
-            }
+            } 
         }
-
         return 0;
     }
 
@@ -119,9 +117,8 @@ public:
         for(int i = 0; i < num_vert; i++) {
             if(s_vertices[i]->getName() == v) {
                 return s_vertices[i]->getInCount();
-            }
+            } 
         }
-
         return 0;
     }
 
@@ -129,7 +126,7 @@ public:
         for(int i = 0; i < num_vert; i++) {
             if(s_vertices[i]->getName() == v) {
                 return s_vertices[i]->getOutEdges();
-            }
+            } 
         }
         return nullptr;
     }
@@ -139,19 +136,19 @@ public:
         for(int i = 0; i < num_vert; i++) {
             if(s_vertices[i]->getName() == v) {
                 return s_vertices[i]->getInEdges();
-            }
+            } 
         }
-
         return nullptr;
     }
 
     bool insertVertex(char x)  {
         if(num_vert >= 10) return false;
+
         s_vertices[num_vert++] = new Vertex(x);
-        return true;
+        true;
     }
 
-    bool insertEdge(char u, char v, int x)  {
+    bool insertEdge(char u, char v, int x) {
         int uInd, vInd;
 
         for(uInd = 0; uInd < num_vert; uInd++) {
@@ -171,73 +168,68 @@ public:
             s_vertices[vInd]->addInEdge(x);
             s_edges[num_edge++] = x;
             return true;
-        } 
-
-        cout << "Not Null" << endl;
-        return false;
+        } else {
+            return false;
+        }
     }
 
     int removeVertex(char v) {
-        int vInd = -1;
+        int v_ind = -1;
+        int removed = 0;
 
         for(int i = 0; i < num_vert; i++) {
-            if(s_vertices[i]->getName() == v) {
-                vInd = i;
+            if(s_vertices[i]->getName() == u) {
+                v_ind = i;
+                break;
             }
         }
 
-        if(vInd == -1) return 0;
+        if(v_ind == -1) return 0;
+
+        int* outEdge = s_vertices[v_ind]->getOutEdges();
+        int* inEdge = s_vertices[v_ind]->getInEdges();
 
         int inCount = s_vertices[vInd]->getInCount();
         int outCount = s_vertices[vInd]->getOutCount();
 
-        int* inEdges = s_vertices[vInd]->getInEdges();
-        int* outEdges = s_vertices[vInd]->getOutEdges();
-
-        int removed = 0;
-
         for(int i = 0; i < inCount; i++) {
-            int e = inEdges[i];
+            int e = inEdge[i];
 
             char* ends = endVertices(e);
             char u = ends[0];
             char vrtx = ends[1];
-
             delete[] ends;
 
-            for(int j = 0; j < inCount; j++) {
+            for(int j = 0; j < num_vert; j++) {
                 if(s_vertices[j]->getName() == u) {
-                    s_vertices[j]->removeOutEdge(e);
+                    s_vertices[j]->removeOutEdgea(e);
                 }
             }
-
             removeEdge(e);
             removed++;
         }
 
         for(int i = 0; i < outCount; i++) {
-            int e = outEdges[i];
+            int e = outEdge[i];
 
             char* ends = endVertices(e);
             char u = ends[0];
             char vrtx = ends[1];
-
             delete[] ends;
 
-            for(int j = 0; j < outCount; j++) {
-                if(s_vertices[j]->getName() == u) {
-                    s_vertices[j]->removeInEdge(e);
+            for(int j = 0; j < num_vert; j++) {
+                if(s_vertices[j]->getName() == vrtx) {
+                    s_vertices[j]->removeOutEdgea(e);
                 }
             }
-
             removeEdge(e);
             removed++;
         }
 
-        delete[] outEdges;
-        delete[] inEdges;
+        delete[] outEdge;
+        delete[] inEdge;
 
-        for(int i = vInd; i < num_vert; i++) {
+        for(int i = v_ind; i < num_vert-1; i++) {
             s_vertices[i] = s_vertices[i+1];
         }
 
@@ -246,30 +238,7 @@ public:
     }
 
     bool removeEdge(int e) {
-        bool found = false;
-
-        for(int i = 0; i < num_vert; i++) {
-            if(s_vertices[i]->removeInEdge(e)) {
-                found = true;
-            } 
-            if(s_vertices[i]->removeOutEdge(e)) {
-                found = true;
-            }
-        }
-
-        if(!found) return false;
-
-        for(int i = 0; i < num_edge; i++) {
-            if(s_edges[i] == e) {
-                for(int j = i; j < num_edge; j++) {
-                    s_edges[j] = s_edges[j+1];
-                }
-                num_edge--;
-                break;
-            }
-        }
-
-        return true;
+        
     }
 
     void print() {

@@ -11,12 +11,12 @@ class ArrayMaxHeap : public MaxHeap {
 
 	int left(int i) {
         // TODO return the index of the left child of index i
-        return (2 * i) + 1;
+		return (2 * i) + 1;
 	}
 
 	int right(int i) {
         // TODO return the index of the right child of index i
-        return (2 * i) + 2;
+		return (2 * i) + 2;
 	}
 	
 	void swap(int child, int parent) {
@@ -39,8 +39,9 @@ class ArrayMaxHeap : public MaxHeap {
 
 		array[size++] = num;
 		int curr = size-1;
+
 		while(curr > 0) {
-			int par = (size - 1)/2;
+			int par = (curr - 1) / 2;
 
 			if(array[curr] > array[par]) {
 				swap(curr, par);
@@ -52,9 +53,8 @@ class ArrayMaxHeap : public MaxHeap {
 	}
 
 	int removeMax() {
-	    if(size == 0) return -1;
+	    int rem = array[0];
 
-		int rem = array[0];
 		swap(0, size-1);
 		size--;
 
@@ -62,6 +62,7 @@ class ArrayMaxHeap : public MaxHeap {
 			capacity = capacity * 0.8;
 
 			if(capacity < 5) capacity = 5;
+
 			array = (int*) realloc(array, capacity * sizeof(int));
 		}
 
@@ -69,22 +70,22 @@ class ArrayMaxHeap : public MaxHeap {
 		while(curr < size) {
 			int leftChild = left(curr);
 			int rightChild = right(curr);
-			int maxChild;
-			
-			if(leftChild >= size) break;
-			if(rightChild >= size) {
-				maxChild = leftChild;
+			int max;
+
+			if(rightChild > size) {
+				max = leftChild;
 			} else {
-				maxChild = (array[leftChild] > array[rightChild]) ? leftChild : rightChild;
+				max = (array[leftChild] > array[rightChild]) ? leftChild : rightChild;
 			}
 
-			if(array[maxChild] > array[curr]) {
-				swap(maxChild, curr);
-				curr = maxChild;
+			if(array[max] > curr) {
+				swap(max, curr);
+				curr = max;
 			} else {
 				break;
 			}
 		}
+
 		return rem;
 	}
 
