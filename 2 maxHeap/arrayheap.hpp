@@ -20,73 +20,72 @@ class ArrayMaxHeap : public MaxHeap {
 	}
 	
 	void swap(int child, int parent) {
-	    int temp = array[parent];
-	    array[parent] = array[child];
-	    array[child] = temp;
+	    int temp = array[child];
+		array[child] = array[parent];
+		array[parent] = temp;
 	}
 
     public:
     ArrayMaxHeap() {
-    	size = 0;
-    	array = (int*) calloc(capacity, sizeof(int));
+    	int size = 0;
+		array = (int*) calloc(capacity, sizeof(int));
 	}
 
 	void insert(int num) {
 	    if(size >= capacity) {
-	        capacity = ceil(capacity*1.5);
-	        array = (int*) realloc(array, capacity * sizeof(int));
-	    }
-	    
-	    array[size++] = num;
-	    
-	    int curr = size-1;
-	    while(curr > 0) {
-	        int par = (curr - 1)/2;
-	        
-	        if(array[curr] > array[par]) {
-	            swap(curr, par);
-	            curr = par;
-	        } else {
-	            break;
-	        }
-	    }
+			capacity = ceil(capacity * 1.5);
+			array = (int*) realloc(array, capacity * sizeof(int));
+		}
+
+		array[size++] = num;
+		int curr = size-1;
+		while(curr > 0) {
+			int par = (size - 1)/2;
+
+			if(array[curr] > array[par]) {
+				swap(curr, par);
+				curr = par;
+			} else {
+				break;
+			}
+		}
 	}
 
 	int removeMax() {
-	    int rem = array[0];
 	    if(size == 0) return -1;
-	    swap(0, size-1);
-	    size--;
-	    
-	    if(size < capacity * (3/4.0)) {
-	        capacity = ceil(capacity * 0.8);
-	        if(capacity < 5) capacity = 5;
-	        
-	        array = (int*) realloc(array, capacity * sizeof(int));
-	    }
-	    
-	    int curr = 0;
-	    while(curr < size) {
-	        int left_child = left(curr);
-	        int right_child = right(curr);
-	        int max_child;
-	        
-	        if(left_child >= size) break;
-	        if(right_child >= size) {
-	            max_child = left_child;
-	        } else {
-	            max_child = (array[left_child] > array[right_child]) ? left_child : right_child;
-	        }
-	        
-	        if(array[max_child] > array[curr]) {
-	            swap(max_child, curr);
-	            curr = max_child;
-	        } else {
-	            break;
-	        }
-	    }
-	    
-	    return rem;
+
+		int rem = array[0];
+		swap(0, size-1);
+		size--;
+
+		if(size < capacity * (3/4.0)) {
+			capacity = capacity * 0.8;
+
+			if(capacity < 5) capacity = 5;
+			array = (int*) realloc(array, capacity * sizeof(int));
+		}
+
+		int curr = 0;
+		while(curr < size) {
+			int leftChild = left(curr);
+			int rightChild = right(curr);
+			int maxChild;
+			
+			if(leftChild >= size) break;
+			if(rightChild >= size) {
+				maxChild = leftChild;
+			} else {
+				maxChild = (array[leftChild] > array[rightChild]) ? leftChild : rightChild;
+			}
+
+			if(array[maxChild] > array[curr]) {
+				swap(maxChild, curr);
+				curr = maxChild;
+			} else {
+				break;
+			}
+		}
+		return rem;
 	}
 
     // DO NOT modify the code below
