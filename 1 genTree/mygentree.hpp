@@ -9,7 +9,6 @@ class MyGenTree : public GenTree {
     node* root;
     int size;
     
-    // FIXED: Return the created node
     node* createNode(int elem, node* par) {
         node* n = new node;
         n->elem = elem;
@@ -35,21 +34,20 @@ class MyGenTree : public GenTree {
         if(n == NULL) return;
 
         for(int i = 0; i < n->num_child; i++) {
-            dfs(n->children[i]);
+            pos(n->children[i]);
         }
-        cout << n->elem << " ";
-
+        
     }
     
     void bfs(node* n) {
-        node* Q[20];
-        int pop = 0, push = 0;
+        node* Q[100];
+        int push = 0, pop = 0;
 
         Q[push++] = n;
 
         while(pop < push) {
             node* curr = Q[pop++];
-            cout << curr-> << " ";
+            cout << curr->elem << " ";
 
             for(int i = 0; i < curr->num_child; i++) {
                 Q[push++] = curr->children[i];

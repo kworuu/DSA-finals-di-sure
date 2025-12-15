@@ -23,7 +23,7 @@ class GraphMatrix : public Graph {
         visit[vInd] = true;
         cout << v << " ";
 
-        for(int i = 0; i < num_vert; i++) {
+        for(int i  = 0; i < num_vert; i++) {
             if(matrix[vInd][i] != 0 && !visit[i]) {
                 dfsRecursive(s_vertices[i], visit);
             }
@@ -281,10 +281,9 @@ class GraphMatrix : public Graph {
         int ind = -1;
         bool visit[num_vert] = {false};
 
-        for(int i  = 0; i < num_vert; i++) {
+        for(int i = 0; i < num_vert; i++) {
             if(s_vertices[i] == start) {
                 ind = i;
-                break;
             }
         }
 
@@ -296,33 +295,31 @@ class GraphMatrix : public Graph {
     }
     
     void breadthFirstSearch(char start) {
-        char Q[100];
-        int push = 0, pop = 0;
+        char curr = Q[num_vert];
         bool visit[num_vert] = {false};
+        int push = 0, pop = 0;
 
         int ind = -1;
-        for(int i  = 0; i < num_vert; i++) {
-            if(s_vertices[i] == start) {
+        for(int i = 0; i < num_vert; i++) {
+            if(s_vertices[i] == curr) {
                 ind = i;
-                break;
             }
         }
 
         if(ind == -1) return;
 
+        visit[ind] = true; 
         Q[push++] = start;
-        visit[ind] = true;
         cout << "BFS: ";
-        
+
         while(pop < push) {
             char curr = Q[pop++];
             cout << curr << " ";
 
             int vInd = -1;
-            for(int i  = 0; i < num_vert; i++) {
-                if(s_vertices[i] == curr) {
+            for(int i = 0; i < num_vert; i++) {
+                if(s_vertices[i] == start) {
                     vInd = i;
-                    break;
                 }
             }
 

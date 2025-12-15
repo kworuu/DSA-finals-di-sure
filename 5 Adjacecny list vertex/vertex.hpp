@@ -42,17 +42,19 @@ public:
 
     int* getOutEdges() {
         int* outEdge = new int[out_count];
-        for(int i =0; i < out_count; i++) {
+        for(int i = 0; i < out_count; i++) {
             outEdge[i] = out_edges[i];
         }
+
         return outEdge;
     }
 
     int* getInEdges() {
         int* inEdge = new int[in_count];
-        for(int i =0; i < in_count; i++) {
+        for(int i = 0; i < in_count; i++) {
             inEdge[i] = in_edges[i];
         }
+        
         return inEdge;
     }
 
@@ -83,28 +85,26 @@ public:
     bool removeOutEdge(int e) {
         for(int i = 0; i < out_count; i++) {
             if(out_edges[i] == e) {
-                for(int j = i; j < out_count; j++) {
-                    out_edges[j] = out_edges[j + 1];
+                for(int j = i; j < out_count-1; j++) {
+                    out_edges[j] = out_edges[j+1];
                 }
-
+                out_count--;
                 return true;
             }
         }
-
         return false;
     }
 
     bool removeInEdge(int e) {
         for(int i = 0; i < in_count; i++) {
             if(in_edges[i] == e) {
-                for(int j = i; j < in_count; j++) {
-                    in_edges[j] = in_edges[j + 1];
+                for(int j = i; j < in_count-1; j++) {
+                    in_edges[j] = in_edges[j+1];
                 }
-
+                in_count--;
                 return true;
             }
         }
-
         return false;
     }
 

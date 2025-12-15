@@ -33,13 +33,13 @@ class ArrayMaxHeap : public MaxHeap {
 
 	void insert(int num) {
 	    if(size >= capacity) {
-			capacity = ceil(capacity * 1.5);
+			capacity = capacity * 1.5;
 			array = (int*) realloc(array, capacity * sizeof(int));
 		}
 
 		array[size++] = num;
-		int curr = size-1;
 
+		int curr = size-1;
 		while(curr > 0) {
 			int par = (curr - 1) / 2;
 
@@ -54,15 +54,12 @@ class ArrayMaxHeap : public MaxHeap {
 
 	int removeMax() {
 	    int rem = array[0];
-
 		swap(0, size-1);
 		size--;
 
 		if(size < capacity * (3/4.0)) {
 			capacity = capacity * 0.8;
-
 			if(capacity < 5) capacity = 5;
-
 			array = (int*) realloc(array, capacity * sizeof(int));
 		}
 
@@ -78,15 +75,13 @@ class ArrayMaxHeap : public MaxHeap {
 				max = (array[leftChild] > array[rightChild]) ? leftChild : rightChild;
 			}
 
-			if(array[max] > curr) {
+			if(array[max] > array[curr]) {
 				swap(max, curr);
 				curr = max;
 			} else {
 				break;
 			}
 		}
-
-		return rem;
 	}
 
     // DO NOT modify the code below
